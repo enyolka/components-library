@@ -1,0 +1,4 @@
+{
+  "staticPath": "public",
+  "plugins": ["react-cosmos-plugin-vite"]
+}

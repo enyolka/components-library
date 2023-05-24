@@ -1,0 +1,12 @@
+.radio_group {
+  display: flex;
+  gap: 4px;
+}
+
+.radio_group:hover {
+  cursor: pointer;
+}
+
+.radio_button {
+  accent-color: var(--secondary);
+}
