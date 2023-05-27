@@ -1,24 +1,30 @@
+@import "../root.css";
+
 .button {
   background-color: var(--main-light-max);
-  box-shadow: 0 1px 2px 1px var(--shadow);
-  padding: 10px;
+  box-shadow: 0 1px 2px 2px var(--shadow);
+  padding: .7rem 1.3rem;
   border: 0.1px solid var(--shadow);
   border-radius: 6px;
   filter: brightness(95%);
+  color:rgb(45, 45, 45);
 }
 
 .button.secondary {
   background-color: var(--secondary);
+  filter: brightness(90%);
   color: white;
 }
 
 .button.important {
   background-color: var(--important);
+  filter: brightness(90%);
   color: white;
 }
 
 .button.error {
   background-color: var(--error-red);
+  filter: brightness(90%);
   color: white;
 }
 

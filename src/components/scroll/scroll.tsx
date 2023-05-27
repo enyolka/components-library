@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useEffect, useRef, useState } from "react";
 import * as classnames from "classnames";
-import styles from "./scroll.module.css";
+import  "./scroll.css";
 
 type Props = {
   label?: string;
@@ -39,13 +39,13 @@ function ScrollToTop({
       setVisible((prev) => {
         if (
           !prev &&
-          containerBoundingRect.bottom > window.innerHeight &&
-          containerBoundingRect.top < 0
+          containerBoundingRect.bottom >= window.innerHeight &&
+          containerBoundingRect.top <= 0
         ) {
           return true;
         } else if (
           prev &&
-          (containerBoundingRect.top >= 0 ||
+          (containerBoundingRect.top > 0 ||
             containerBoundingRect.bottom < window.innerHeight)
         ) {
           return false;
@@ -67,11 +67,11 @@ function ScrollToTop({
       {children}
       <button
         ref={buttonRef}
-        className={classnames(styles.scroll, visible ? styles.visible : "")}
+        className={classnames("scroll", visible ? "visible" : "")}
         onClick={handleClick}
         aria-label={label}
       >
-        <i className={styles.scroll__icon} />
+        <i className={"scroll__icon"} />
       </button>
     </div>
   );

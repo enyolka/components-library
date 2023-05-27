@@ -1,0 +1,22 @@
+:root {
+    --white: rgb(255, 255, 255);
+    --gray-light: rgb(241, 241, 241);
+    --gray: rgb(221, 221, 221);
+    --main: rgb(41, 80, 98);
+    --secondary: rgb(23, 116, 139);
+    --main-light: rgb(170, 219, 219);
+    --main-medium: rgb(65, 164, 177);
+    --main-light-max: rgb(232, 244, 244);
+    --shadow: rgb(0, 0, 0, 0.1);
+    --error-red: rgb(196, 2, 2);
+    --important: rgb(255, 158, 72);
+    --important-hover: rgb(208, 133, 66);
+    --important-text: rgb(195, 136, 34);
+    --focus-text: rgb(178, 122, 24);
+  }
+  
+  * {
+    padding: 0;
+    box-sizing: border-box;
+  }
+  

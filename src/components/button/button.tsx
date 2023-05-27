@@ -36,7 +36,7 @@ const Button = ({
 
     for (let i = 0; i < bubbles.length; i++) {
       bubbles[i].addEventListener("click", animateButton, false);
-    }
+    } 
   }, []);
 
   return (

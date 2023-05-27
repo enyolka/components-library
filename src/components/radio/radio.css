@@ -1,12 +1,19 @@
-.radio_group {
+.radio__group {
   display: flex;
   gap: 4px;
+  margin-bottom: 0.5rem;
 }
 
-.radio_group:hover {
+.radio__group.disabled,
+.radio__group.disabled > * { 
+  color: rgb(149, 149, 149);
+  cursor: not-allowed;
+}
+
+.radio__group:hover {
   cursor: pointer;
 }
 
-.radio_button {
+.radio__button {
   accent-color: var(--secondary);
 }

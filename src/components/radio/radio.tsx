@@ -4,7 +4,7 @@ import "./radio.css";
 
 type PropsRadio = {
   label: string;
-  id: string;
+  value: string;
   groupName: string;
   children?: React.ReactNode;
   className?: string;
@@ -14,23 +14,23 @@ type Props = PropsRadio & React.InputHTMLAttributes<HTMLInputElement>;
 
 const Radio = ({
   label,
-  id,
+  value,
   groupName,
   children,
   className,
   ...props
 }: Props) => {
   return (
-    <label htmlFor={id} className={classNames("radio_group", className)}>
+    <label htmlFor={value} className={classNames("radio__group", props.disabled && "disabled", className)}>
       <input
         type="radio"
-        id={id}
-        value={id}
+        id={value}
+        value={value}
         name={groupName}
-        className="radio_button"
+        className="radio__button"
         {...props}
       />
-      <span className="radio_label">{label}</span>
+      <span className="radio__label">{label}</span>
       {children}
     </label>
   );

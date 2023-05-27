@@ -11,9 +11,9 @@ type Props = {
 
 const Link = ({ to, children, className }: Props) => {
   return (
-    <RDLink to={to} className={classNames("link", className)}>
+    <a href={to} className={classNames("link", className)}>
       {children}
-    </RDLink>
+    </a>
   );
 };
 

@@ -5,23 +5,19 @@ import "./toggle.css";
 export type Props = {
   className?: string;
   options: Array<Option>;
-  size?: Size;
   disabled?: boolean;
   value: string;
-  icon?: boolean;
-  onChange?: (newValue: string) => void;
+  onChange?: (value: string) => void;
   onBlur?: React.FocusEventHandler<HTMLElement>;
   onFocus?: React.FocusEventHandler<HTMLElement>;
 };
 
 export type Option = {
-  className?: string;
   value: string;
   label: string;
   icon?: React.ReactNode;
+  className?: string;
 };
-
-type Size = "default" | "condensed";
 
 const Toggle = ({
   onChange,
@@ -29,35 +25,27 @@ const Toggle = ({
   value,
   className,
   disabled,
-  size = "default",
-  icon,
   onBlur,
   onFocus,
 }: Props): React.ReactElement => {
   return (
     <div className={classNames(className, "toggle-group")}>
-      {options.map(({ label, className, ...it }) => (
+      {options.map((option) => (
         <label
-          key={it.value}
-          className={classNames(
-            "toggle",
-            {
-              "toggle--xs": size === "condensed",
-            },
-            className
-          )}
+          key={option.value}
+          className={classNames("toggle", option.className)}
         >
           <input
             className="toggle__input"
             type="radio"
-            checked={value === it.value}
-            aria-label={label}
-            onChange={() => onChange?.(it.value)}
+            checked={value === option.value}
+            aria-label={option.label}
+            onChange={() => onChange?.(option.value)}
             disabled={disabled}
             onBlur={onBlur}
             onFocus={onFocus}
           />
-          <span className="label">{icon ? it.icon : label}</span>
+          <span className="label">{option.icon}{option.label}</span>
         </label>
       ))}
     </div>

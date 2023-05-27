@@ -14,7 +14,8 @@
 .menuLink_header {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: left;
+  margin-left: 0.3rem;
   gap: 6px;
 }
 
@@ -37,6 +38,7 @@
   box-shadow: 0 0 8px 2px var(--shadow);
   padding: 0.3rem 0;
   list-style: none;
+  width: 100%;
 }
 
 .menuLink__listItem {

@@ -5,7 +5,8 @@
 
 .breadcrumb:hover {
   cursor: pointer;
-  color: rgb(10, 10, 10);
+  text-decoration: underline;
+  color: rgb(29, 29, 29);
 }
 
 .breadcrumb__icon {

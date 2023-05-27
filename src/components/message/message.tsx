@@ -3,19 +3,21 @@ import * as React from "react";
 import "./message.css";
 import { BiInfoCircle, BiErrorCircle, BiMessageAlt } from "react-icons/bi";
 import { BsExclamationDiamond } from "react-icons/bs";
+import { type } from "@testing-library/user-event/dist/type";
 
-type messageType = "default" | "important" | "info" | "error";
+export type messageType = "default" | "important" | "info" | "error";
+export type messageSize =  "small" | "medium" | "big";
 
 type Props = {
   type?: messageType;
-  size?: "small" | "medium" | "big";
+  size?: messageSize;
   wrapped?: boolean;
   children?: React.ReactNode;
   className?: string;
 };
 
 const Message = ({
-  type,
+  type = "default",
   size,
   wrapped = false,
   children,
@@ -41,4 +43,3 @@ const Message = ({
 };
 
 export default Message;
-("");

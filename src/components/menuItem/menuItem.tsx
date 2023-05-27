@@ -1,7 +1,6 @@
 import * as classnames from "classnames";
 import * as React from "react";
 import {  useRef, useState } from "react";
-import {  useMatch, useNavigate, useResolvedPath } from "react-router-dom";
 import "./menuItem.css";
 
 type MenuItemRole = "redirect" | "popup";
@@ -16,9 +15,9 @@ type Props = {
   icon?: React.ReactNode;
   role?: MenuItemRole;
   to?: string;
-  showActive?: boolean;
+  isActive?: boolean;
   options?: string[]; //MenuItemOption[];
-  onOptionSelect?: (value: string | boolean) => void;
+  onOptionSelect?: (value: string) => void;
   onClick?: () => void;
   children?: React.ReactNode;
   className?: string;
@@ -27,9 +26,9 @@ type Props = {
 const MenuItem = ({
   header,
   icon,
-  to,
+  to = "",
   role = "redirect",
-  showActive = true,
+  isActive = false,
   options,
   onOptionSelect,
   onClick,
@@ -40,23 +39,21 @@ const MenuItem = ({
   const [open, setOpen] = useState(false);
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
-  const ref = useRef(null);
-  const resolvedPath = useResolvedPath(to);
-  const navigate = useNavigate();
-  const isActive = useMatch({ path: resolvedPath.pathname, end: true });
+  const ref = useRef<HTMLUListElement>(null);
 
   const detectMousePosition = () => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const handleMouseMove = React.useCallback((event: any) => {
       if (
         ref?.current?.clientWidth &&
-        event.clientX + ref.current.clientWidth > screen.width
+        event.clientX + ref.current.clientWidth > window.screen.width
       )
-        setX(event.clientX + ref.current.clientWidth - screen.width + 20);
+        setX(event.clientX + ref.current.clientWidth - window.screen.width + 20);
       if (
         ref?.current?.clientHeight &&
-        event.clientY + ref.current.clientHeight > screen.height
+        event.clientY + ref.current.clientHeight > window.screen.height
       )
-        setY(event.clientY + ref.current.clientHeight - screen.height + 20);
+        setY(event.clientY + ref.current.clientHeight - window.screen.height + 20);
       event.stopPropagation();
       event.preventDefault();
     }, []);
@@ -66,13 +63,20 @@ const MenuItem = ({
       window.removeEventListener("mousemove", handleMouseMove);
     };
   };
+  console.log(icon)
+
 
   return (
     <>
       {options && options.length > 0 ? (
         <div
-          className={classnames("menuLink", className)}
+          className={classnames(
+            "menuLink",
+            isActive && "active",
+            className
+          )}
           onMouseEnter={() => {
+            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
             () => detectMousePosition();
             // setOpen(true)
           }}
@@ -84,8 +88,8 @@ const MenuItem = ({
           <div
             className="menuLink_header"
             onClick={() => {
-              navigate(to);
-              onClick();
+              // navigate(to);
+              onClick?.();
             }}
           >
             {icon}
@@ -94,16 +98,13 @@ const MenuItem = ({
 
           <ul
             ref={ref}
-            className={classnames("menuLink__listbox", { open: open })}
-            style={{
-              top: ref?.current?.clientHeight + ref?.current?.clientX + y,
-              right: ref?.current?.clientWidth + ref?.current?.clientY + x,
-            }}
+            className={classnames("menuLink__listbox", { open: open})}
+            
           >
             {options.map((option) => (
               <li
                 onClick={() => {
-                  onOptionSelect(option);
+                  onOptionSelect?.(option);
                 }}
                 className={classnames("menuLink__listItem")}
               >
@@ -131,7 +132,7 @@ const MenuItem = ({
         <div
           className={classnames(
             "menuLink",
-            showActive && isActive && "active",
+            isActive && "active",
             className
           )}
           {...props}
@@ -139,8 +140,8 @@ const MenuItem = ({
           <div
             className="menuLink_header"
             onClick={() => {
-              navigate(to);
-              onClick();
+              // navigate(to);
+              onClick?.();
             }}
           >
             {icon}
