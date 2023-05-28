@@ -1,219 +1,89 @@
-import { useEffect, useMemo, useState } from "react";
 import * as React from "react";
-import * as classNames from "classnames";
-import "./accordionMenu.css";
+import Accordion from "./accordion";
+import AccordionWrapper from "./AccordionWrapper";
+import "./headerRightside.css"
+import classNames from "classnames";
+import { useEffect, useRef, useState } from "react";
 
-type SectionProps = {
-  header: string;
-  icon?: React.ReactNode;
-  subHeader?: string;
-  children?: React.ReactNode;
-  expanded?: boolean;
-  expandable?: boolean;
-  headerColor?: "default" | "main" | string;
-  color?: "default" | "main" | string;
-  className?: string;
-  onClick?: () => void;
-  onAdditionalClick?: () => void;
-};
-
-export type Props = {
-  className?: string;
-  multiExpand?: boolean;
-  collapsible?: boolean;
-  children?: Array<React.ReactElement<ChildrenProps>>;
-};
-
-type ChildrenProps = {
-  expanded?: boolean;
-  onClick?: () => void;
-};
-
-function AccordionSection({
-  expanded,
-  onClick,
-  onAdditionalClick,
-  header,
-  icon,
-  children,
-  subHeader,
-  expandable = true,
-  headerColor = "default",
-  color = "default",
-  className,
-  ...props
-}: SectionProps): React.ReactElement {
-  return (
-    <section className="accordion__drawer">
-      <header
-        className="accordion__header"
-        tabIndex={0}
-        // aria-controls={accordionSectionId}
-        aria-expanded={expandable && expanded}
-        onClick={onClick}
-        style={{
-          backgroundColor:
-            color && color == "default"
-              ? "rgb(250, 250, 250)"
-              : color == "main"
-              ? "var(--main-light-max)"
-              : color,
-        }}
-      >
-        {icon}
-        <h4
-          onClick={(event) => {
-            if (event.target == event.currentTarget) event.stopPropagation();
-            onAdditionalClick();
-          }}
-        >
-          {header}
-        </h4>
-        {expandable && (
-          <div
-            className={classNames(expanded ? "button-up" : "button-down")}
-          ></div>
-        )}
-      </header>
-      {children && expandable ? (
-        <div
-          className="accordion__content"
-          // id={accordionSectionId}
-          style={{
-            visibility: expanded ? "visible" : "hidden",
-            height: expanded ? "auto" : "0px",
-            backgroundColor:
-              color === "default"
-                ? "rgb(253, 253, 253)"
-                : color == "main"
-                ? "rgba(255,255,255, 0.5)"
-                : color,
-          }}
-        >
-          {subHeader && <h5>{subHeader}</h5>}
-          <div>{children}</div>
-        </div>
-      ) : null}
-    </section>
-  );
+type AccordionMenuSubOption = {
+    name: string;
+    onClick?: () => void;
+    icon?: string;
 }
 
-function Accordion({
-  className,
-  collapsible = true,
-  multiExpand = true,
-  children,
-}: Props): React.ReactElement {
-  const sensibleChildren = useMemo(
-    () => children.filter((child) => !!child),
-    [children]
-  );
-
-  const [expanded, onToggle] = useAccordion(
-    sensibleChildren.length,
-    collapsible,
-    multiExpand,
-    () => sensibleChildren.map((it) => it.props.expanded ?? false)
-  );
-
-  const clonedChildren = useMemo(() => {
-    return sensibleChildren.map((element, idx) =>
-      React.cloneElement(element, {
-        key: idx,
-        expanded: expanded[idx],
-        onClick: () => onToggle(idx),
-      })
-    );
-  }, [sensibleChildren, expanded]);
-
-  return (
-    <div className={classNames("accordion", className)}>{clonedChildren}</div>
-  );
+type AccordionMenuOption = {
+    name: string;
+    onClick?: () => void;
+    icon?: string;
+    suboptions?: AccordionMenuSubOption[]
 }
 
-const useAccordion = (
-  length: number,
-  collapsible: boolean,
-  multiExpand: boolean,
-  initialExpanded: boolean[] | (() => boolean[])
-): [expanded: boolean[], onToggle: (idx: number) => void] => {
-  const [expanded, setExpanded] = useState(initialExpanded);
+type Props = {
+    options: AccordionMenuOption[];
+}
 
-  useEffect(() => {
-    setExpanded((prev) => normalize(prev, multiExpand));
-  }, [multiExpand]);
+const AccordionMenu = ({options}: Props) => {
+    const [active, setActive] = useState(false);
+    const menuRef = useRef(null);
+    const togglerRef = useRef(null);
 
-  useEffect(() => {
-    setExpanded((prev) => {
-      if (length <= prev.length) {
-        return normalize(prev.slice(0, length), multiExpand);
-      } else {
-        return normalize(
-          [...prev, ...getBooleanArray(length - prev.length)],
-          multiExpand
-        );
-      }
-    });
-  }, [length]);
+    const handleClickOutside = (event: any) => {
+        if (
+          menuRef.current &&
+          !menuRef.current.contains(event.target) &&
+          !togglerRef.current.contains(event.target)
+        ) {
+          setActive(false);
+        }
+      };
+    
+      useEffect(() => {
+        document.addEventListener("click", handleClickOutside, true);
+        return () => {
+          document.removeEventListener("click", handleClickOutside, true);
+        };
+      }, []);
 
-  const onToggle = (idx: number) =>
-    setExpanded((prev) => toggle(prev, idx, collapsible, multiExpand));
+    return (
+        <>
+            <div
+                className={classNames("menu__toggler--right", active ? "active" : null)}
+                onClick={() => setActive(!active)}
+                ref={togglerRef}
+            >
+                <span></span>
+            </div>
+            <div
+                className={classNames("menu--right", active ? "active" : null)}
+                ref={menuRef}
+            >
+                <AccordionWrapper>
+                    {options.map((option: AccordionMenuOption) => (
+                        <Accordion
+                            className="item_name"
+                            header={option.name}
+                            icon={option.icon}
+                            onAdditionalClick={() => option.onClick?.()}
+                            color="main"
+                            headerColor="main"
+                            key={option.name}
+                            >
+                            {option.suboptions && option.suboptions.map((suboption: AccordionMenuSubOption) => (
+                                <div
+                                onClick={() => suboption.onClick?.()}
+                                className={"item_link"}
+                                >
+                                {suboption.icon}
+                                {suboption.name}
+                                </div>
+                            ))}
+                        </Accordion>
+                    ))
+                }
+                </AccordionWrapper>  
+            </div>
+        </>
+    )
+}
 
-  return [expanded, onToggle];
-};
-
-const toggle = (
-  expanded: boolean[],
-  idx: number,
-  collapsible: boolean,
-  multiExpand: boolean
-): boolean[] => {
-  if (!collapsible && !multiExpand) {
-    const newExpanded = getBooleanArray(expanded.length);
-    newExpanded[idx] = !expanded[idx];
-
-    if (newExpanded.every((isExpanded) => !isExpanded)) {
-      return expanded;
-    }
-    return newExpanded;
-  } else if (!collapsible) {
-    const newExpanded = [...expanded];
-    newExpanded[idx] = !expanded[idx];
-
-    if (newExpanded.every((isExpanded) => !isExpanded)) {
-      return expanded;
-    }
-    return newExpanded;
-  } else if (!multiExpand) {
-    const newExpanded = getBooleanArray(expanded.length);
-    newExpanded[idx] = !expanded[idx];
-    return newExpanded;
-  } else {
-    return toggleArray(expanded, idx);
-  }
-};
-
-const toggleArray = (array: boolean[], idx: number) => {
-  const newArray = [...array];
-  newArray[idx] = !newArray[idx];
-  return newArray;
-};
-
-const normalize = (expanded: boolean[], multiExpand: boolean): boolean[] => {
-  if (!multiExpand) {
-    const firstExpandedIdx = expanded.indexOf(true);
-    const newExpanded = getBooleanArray(expanded.length);
-    if (firstExpandedIdx !== -1) {
-      newExpanded[firstExpandedIdx] = true;
-    }
-    return newExpanded;
-  }
-  return expanded;
-};
-
-const getBooleanArray = (size: number, init = false): boolean[] =>
-  new Array(size).map(() => init);
-
-export { useAccordion };
-
-export { Accordion, AccordionSection };
+export default AccordionMenu;

@@ -7,7 +7,8 @@ import { RiCloseCircleLine } from "react-icons/ri";
 type Props = {
   isOpen: boolean;
   setIsOpen: (value: boolean) => void;
-  closeOutside?: boolean;
+  isOutsideClosable?: boolean;
+  isCloseMarkVisible?: boolean;
   label?: string;
   children?: React.ReactNode;
   className?: string;
@@ -16,7 +17,8 @@ type Props = {
 const Modal = ({
   isOpen,
   setIsOpen,
-  closeOutside = true,
+  isOutsideClosable = true,
+  isCloseMarkVisible = true,
   label,
   children,
   className,
@@ -26,17 +28,19 @@ const Modal = ({
       isOpen={isOpen}
       contentLabel={label}
       onRequestClose={() => setIsOpen(false)}
-      shouldCloseOnOverlayClick={closeOutside}
+      shouldCloseOnOverlayClick={isOutsideClosable}
       className={classNames("modal", className)}
       ariaHideApp={false}
       // style={customStyles}
     >
-      <div className="modal_close">
-        <RiCloseCircleLine
-          className="modal_close--icon"
-          onClick={() => setIsOpen(false)}
-        />
-      </div>
+      {isCloseMarkVisible && (
+        <div className="modal_close">
+          <RiCloseCircleLine
+            className="modal_close--icon"
+            onClick={() => setIsOpen(false)}
+          />
+        </div>
+      )}
 
       {children}
     </ReactModal>

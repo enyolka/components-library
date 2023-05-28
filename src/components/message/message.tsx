@@ -3,7 +3,6 @@ import * as React from "react";
 import "./message.css";
 import { BiInfoCircle, BiErrorCircle, BiMessageAlt } from "react-icons/bi";
 import { BsExclamationDiamond } from "react-icons/bs";
-import { type } from "@testing-library/user-event/dist/type";
 
 export type messageType = "default" | "important" | "info" | "error";
 export type messageSize =  "small" | "medium" | "big";

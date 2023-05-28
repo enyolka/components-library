@@ -2,7 +2,7 @@ import * as React from "react";
 import * as classNames from "classnames";
 import "./steps.css";
 
-export type Step = {
+export type StepType = {
   label: string;
   subLabel?: string;
   link?: string;
@@ -10,7 +10,7 @@ export type Step = {
 };
 
 export type Props = {
-  steps: Step[];
+  steps: StepType[];
   activeStepIdx: number;
   ariaLabelCompleted: string;
   ariaLabelCurrent: string;

@@ -14,17 +14,15 @@ export default () => {
     const [withIcon] = useValue<boolean>("withIcon", {defaultValue: true})
 
 	return (
-        // <div style={{margin: "80px"}}>
-    <MenuItem
-        role="popup"
-        to="/ustawienia"
-        options={settingOptions}
-        onOptionSelect={setSettingOption}
-        className={"extra-style"}
-        header="ustawienia"
-        icon={withIcon && <IoSettings className="header_bar__icon" />}
-        isActive={isActive}
-    />
-        // </div> 
+        <MenuItem
+            role="popup"
+            to="/ustawienia"
+            options={settingOptions}
+            onOptionSelect={setSettingOption}
+            className={"extra-style"}
+            header="ustawienia"
+            icon={withIcon && <IoSettings className="header_bar__icon" />}
+            isActive={isActive}
+        />       
     )
 };

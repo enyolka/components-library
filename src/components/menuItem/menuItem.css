@@ -1,4 +1,4 @@
-.menuLink {
+.menuLink, .menuLink > * {
   text-decoration: none;
   color: rgb(38, 38, 38);
   padding: 4px;
@@ -6,7 +6,7 @@
   position: relative;
 }
 
-.menuLink:hover {
+.menuLink:hover, .menuLink > *:hover {
   color: var(--main);
   cursor: pointer;
 }
@@ -19,12 +19,12 @@
   gap: 6px;
 }
 
-.active {
+.active.menuLink > * {
   color: var(--secondary);
   /* text-decoration: underline; */
 }
 
-.active:hover {
+.active.menuLink > *:hover {
   color: var(--main-medium);
 }
 

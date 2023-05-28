@@ -1,16 +1,16 @@
-.autoSuggest {
+.search {
   /* margin-bottom: 0.5rem; */
   position: relative;
 }
 
-.autoSuggest label {
+.search label {
   cursor: pointer;
   display: block;
   position: relative;
   z-index: 10;
 }
 
-.autoSuggest .label {
+.search .label {
   color: #54575d;
   left: 1rem;
   margin-left: 1px;
@@ -27,11 +27,11 @@
   z-index: 10;
 }
 
-.autoSuggest .autoSuggest__input {
+.search .search__input {
   padding: 1rem 0.5rem;
 }
 
-.autoSuggest__input {
+.search__input {
   font-size: 0.8rem;
   appearance: none;
   background-color: rgb(251, 251, 251);
@@ -52,35 +52,35 @@
   box-shadow: 0 1px 2px 1px var(--shadow);
 }
 
-.autoSuggest__input:focus,
-.autoSuggest__input.focus {
+.search__input:focus,
+.search__input.focus {
   background-color: white;
 }
 
-.autoSuggest__input:focus,
-.autoSuggest__input.focus,
-.autoSuggest__searchButton.focus {
+.search__input:focus,
+.search__input.focus,
+.search__searchButton.focus {
   border: 1px solid transparent;
   outline: 1.2px solid var(--secondary);
 }
 
-.autoSuggest:hover .autoSuggest__input {
+.search:hover .search__input {
   border: 1.1px solid var(--gray);
 }
 
-.autoSuggest__input:disabled {
+.search__input:disabled {
   background-color: transparent;
   border: 1px solid var(--gray);
   color: var(--gray);
   cursor: not-allowed;
 }
 
-.autoSuggest:hover .autoSuggest__input:disabled {
+.search:hover .search__input:disabled {
   border: 1px solid var(--gray);
   cursor: not-allowed;
 }
 
-.autoSuggest__listbox {
+.search__listbox {
   display: none;
   position: absolute;
   width: 100%;
@@ -92,19 +92,19 @@
   list-style: none;
 }
 
-.autoSuggest__listbox.visible {
+.search__listbox.visible {
   display: block;
 }
-.autoSuggest__listbox.visible ~ .input__message {
+.search__listbox.visible ~ .input__message {
   visibility: hidden;
 }
 
-.autoSuggest__listbox.show_all_terms {
+.search__listbox.show_all_terms {
   overflow-y: scroll;
   max-height: 200px;
 }
 
-.autoSuggest__listItem {
+.search__listItem {
   color: #404247;
   cursor: pointer;
   font-size: 0.8rem;
@@ -113,33 +113,33 @@
   outline: 0;
   padding: 0.5rem 2rem;
 }
-.autoSuggest__listItem:hover:not(.autoSuggest__listItem--action) {
+.search__listItem:hover:not(.search__listItem--action) {
   background-color: #f6f6f7;
 }
-.autoSuggest__listItem:focus[data-suggestion-object]
-  .autoSuggest__listItem__value,
-.autoSuggest__listItem.focus[data-suggestion-object]
-  .autoSuggest__listItem__value {
+.search__listItem:focus[data-suggestion-object]
+  .search__listItem__value,
+.search__listItem.focus[data-suggestion-object]
+  .search__listItem__value {
   text-decoration: underline;
 }
-.autoSuggest__listItem:focus:not([data-suggestion-object]),
-.autoSuggest__listItem.focus:not([data-suggestion-object]) {
+.search__listItem:focus:not([data-suggestion-object]),
+.search__listItem.focus:not([data-suggestion-object]) {
   text-decoration: underline;
 }
 
-.autoSuggest__listItem mark {
+.search__listItem mark {
   background-color: transparent;
   color: inherit;
   font-weight: 400;
 }
 
-.autoSuggest__listItem__no_results,
-.autoSuggest__listItem__no_results:hover {
+.search__listItem__no_results,
+.search__listItem__no_results:hover {
   cursor: default;
   font-weight: 400;
 }
 
-.autoSuggest__list-divider {
+.search__list-divider {
   background-color: #e1e2e5;
   cursor: default;
   height: 1px;
@@ -148,7 +148,7 @@
   padding: 0;
 }
 
-.autoSuggest__list-category[role="presentation"] {
+.search__list-category[role="presentation"] {
   background-color: #f6f6f7;
   border-bottom: 1px solid transparent;
   border-top: 1px solid transparent;
@@ -160,37 +160,37 @@
   padding: 0.5rem 1rem;
   text-transform: uppercase;
 }
-.autoSuggest__list-category[role="presentation"]:first-child {
+.search__list-category[role="presentation"]:first-child {
   border-top: 0;
   margin-top: -0.5rem;
 }
 
-.autoSuggest__listItem__description {
+.search__listItem__description {
   color: #6d7178;
   display: block;
   font-size: 0.8rem;
   font-weight: 400;
 }
 
-.autoSuggest__listItem,
-.autoSuggest__list-category[role="presentation"],
-.autoSuggest__listItem__description {
+.search__listItem,
+.search__list-category[role="presentation"],
+.search__listItem__description {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.autoSuggest__field {
+.search__field {
   position: relative;
   display: flex;
 }
 
-.autoSuggest__icon {
+.search__icon {
   width: 18px;
   height: 18px;
 }
 
-.autoSuggest__searchButton {
+.search__searchButton {
   width: 40px;
   height: 34px;
   border: 1px solid var(--main-medium);
@@ -204,7 +204,7 @@
   box-shadow: 0 1px 2px 1px var(--shadow);
 }
 
-.autoSuggest__searchButton:disabled {
+.search__searchButton:disabled {
   background-color: var(--gray);
   cursor: not-allowed;
 }

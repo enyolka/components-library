@@ -27,22 +27,22 @@
   }
 }
 
-.loader,
 .loader::after,
+.loader.medium::after,
 .loader.medium,
-.loader::after.medium {
-  height: 50px;
-  width: 50px;
+.loader {
+  height: 40px;
+  width: 40px;
 }
 
 .loader.small,
-.loader::after.small {
-  height: 20px;
-  width: 20px;
+.loader.small::after {
+  height: 16px;
+  width: 16px;
 }
 
 .loader.big,
-.loader::after.big {
-  height: 80px;
-  width: 80px;
+.loader.big::after {
+  height: 64px;
+  width: 64px;
 }

@@ -1,12 +1,22 @@
+/* eslint-disable jsx-a11y/no-redundant-roles */
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import * as classNames from "classnames";
 import * as React from "react";
 import { useEffect, useRef, useState } from "react";
 import { FaSearch } from "react-icons/fa";
-import "./autoSuggest.css";
+import "./search.css";
 
-const useUniqueId = (x: string) => x;
+export type Option = {
+  value: string;
+  label: string;
+  description?: string;
+  category: string;
+  subcategory?: string;
+  icon?: React.ReactElement;
+  disabled?: boolean;
+};
 
-type SuggestTerm = string | ObjectTerm;
+type SearchTerm = string | ObjectTerm;
 
 export type ObjectTerm = {
   value: string;
@@ -16,12 +26,12 @@ export type ObjectTerm = {
   category?: string;
 };
 
-export type Props<O extends SuggestTerm> = {
+export type Props<O extends SearchTerm> = {
   className?: string;
   label: string;
   minLength?: number;
   maxSuggestions?: number;
-  autoSuggestTerms: [] | O[];
+  searchTerms: [] | O[];
   showNoResultsFound?: boolean;
   noResultsFoundText?: string;
   showAllTerms?: boolean;
@@ -39,10 +49,10 @@ export type Props<O extends SuggestTerm> = {
   required?: boolean;
 };
 
-function AutoSuggest<O extends SuggestTerm>({
+function Search<O extends SearchTerm>({
   className,
   label,
-  autoSuggestTerms,
+  searchTerms,
   maxSuggestions = 7,
   minLength = 2,
   noResultsFoundText = "No results found",
@@ -56,8 +66,8 @@ function AutoSuggest<O extends SuggestTerm>({
   button = true,
   ...props
 }: Props<O>): React.ReactElement {
-  const labelId = useUniqueId("autosuggest-label");
-  const listboxId = useUniqueId("autosuggest-listbox");
+  const labelId = "search-label";
+  const listboxId = "search-listbox";
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [query, setQuery] = useState<string>(() => getQuery(value));
@@ -65,7 +75,7 @@ function AutoSuggest<O extends SuggestTerm>({
   const [activeTermIdx, setActiveTermIdx] = useState(-1);
   const [expanded, setExpanded] = useState(false);
   const [closeable, setCloseable] = useState(true);
-  const [termsToShow, setTermsToShow] = useState([]);
+  const [termsToShow, setTermsToShow] = useState<any[]>([]);
 
   const hasInput = !!value;
 
@@ -101,10 +111,10 @@ function AutoSuggest<O extends SuggestTerm>({
   useEffect(() => {
     setTermsToShow(
       showAllTerms && !hasInput
-        ? autoSuggestTerms
-        : getFilteredTerms(value, minLength, autoSuggestTerms, maxSuggestions)
+        ? searchTerms
+        : getFilteredTerms(value, minLength, searchTerms, maxSuggestions)
     );
-  }, [showAllTerms, hasInput, autoSuggestTerms, maxSuggestions, length, value]);
+  }, [showAllTerms, hasInput, searchTerms, maxSuggestions, value, minLength]);
 
   useEffect(() => {
     if (activeTermIdx === -1) {
@@ -115,7 +125,7 @@ function AutoSuggest<O extends SuggestTerm>({
         setQuery(typeof term === "string" ? term : term.label ?? term.value);
       }
     }
-  }, [activeTermIdx]);
+  }, [activeTermIdx, termsToShow, value]);
 
   useEffect(() => {
     setActiveTermIdx(-1);
@@ -125,7 +135,7 @@ function AutoSuggest<O extends SuggestTerm>({
     if (e.target !== inputRef.current && !e.shiftKey) {
       inputRef.current?.focus();
     }
-    if (termsToShow.length < 1) {
+    if (termsToShow?.length < 1) {
       () => setExpanded(false);
       return;
     } else if (
@@ -149,7 +159,7 @@ function AutoSuggest<O extends SuggestTerm>({
 
   return (
     <div
-      className={classNames("autoSuggest", hasInput ? "active" : "", className)}
+      className={classNames("search", hasInput ? "active" : "", className)}
       role="combobox"
       aria-expanded={expanded}
       aria-haspopup="listbox"
@@ -165,10 +175,10 @@ function AutoSuggest<O extends SuggestTerm>({
       onKeyDown={onKeyDown}
     >
       <label>
-        <div className="autoSuggest__field">
+        <div className="search__field">
           <input
             ref={inputRef}
-            className={classNames("autoSuggest__input", {
+            className={classNames("search__input", {
               focus: focusedWithin,
               borderRight: !!buttonIcon || button,
             })}
@@ -182,7 +192,7 @@ function AutoSuggest<O extends SuggestTerm>({
             aria-autocomplete="list"
             aria-controls={listboxId}
             aria-activedescendant={
-              activeTermIdx === -1 ? undefined : "autoSuggest__listItem" //__${activeTermIdx}
+              activeTermIdx === -1 ? undefined : "search__listItem" //__${activeTermIdx}
             }
             value={query}
             onChange={(e) => {
@@ -197,7 +207,7 @@ function AutoSuggest<O extends SuggestTerm>({
           </span>
           {buttonIcon || button ? (
             <button
-              className={classNames("autoSuggest__searchButton", {
+              className={classNames("search__searchButton", {
                 focus: focusedWithin,
               })}
               onClick={() =>
@@ -209,7 +219,7 @@ function AutoSuggest<O extends SuggestTerm>({
               {buttonIcon != undefined ? (
                 buttonIcon
               ) : (
-                <FaSearch className="autoSuggest__buttonIcon" />
+                <FaSearch className="search__buttonIcon" />
               )}
             </button>
           ) : null}
@@ -217,7 +227,7 @@ function AutoSuggest<O extends SuggestTerm>({
       </label>
       <ul
         id={listboxId}
-        className={classNames("autoSuggest__listbox", {
+        className={classNames("search__listbox", {
           visible: expanded,
           show_all_terms: expanded && showAllTerms && !hasInput,
         })}
@@ -229,8 +239,8 @@ function AutoSuggest<O extends SuggestTerm>({
             <li
               key={idx}
               role="option"
-              id={`"autoSuggest__listItem--${idx}`}
-              className={classNames("autoSuggest__listItem", {
+              id={`"search__listItem--${idx}`}
+              className={classNames("search__listItem", {
                 focus: activeTermIdx === idx,
               })}
               tabIndex={-1}
@@ -247,7 +257,7 @@ function AutoSuggest<O extends SuggestTerm>({
               )}
               {getLabel(it, value, idx)}
               {typeof it !== "string" && it.description && (
-                <span className={"autoSuggest__listItem__description"}>
+                <span className={"search__listItem__description"}>
                   {it.description}
                 </span>
               )}
@@ -260,8 +270,8 @@ function AutoSuggest<O extends SuggestTerm>({
           value.length >= minLength && (
             <li
               className={classNames(
-                "autoSuggest__listItem",
-                "autoSuggest__listItem__no_results"
+                "search__listItem",
+                "search__listItem__no_results"
               )}
               role="presentation"
             >
@@ -273,18 +283,18 @@ function AutoSuggest<O extends SuggestTerm>({
   );
 }
 
-function getQuery<O extends SuggestTerm>(value: string | O): string {
+function getQuery<O extends SearchTerm>(value: string | O): string {
   return typeof value === "string" ? value : value.label ?? value.value;
 }
 
-function getFilteredTerms<O extends SuggestTerm>(
+function getFilteredTerms<O extends SearchTerm>(
   value: string | O,
   minLength: number,
-  autoSuggestTerms: O[],
+  searchTerms: O[],
   maxSuggestions: number
 ): O[] {
   if (typeof value !== "string") {
-    autoSuggestTerms.find((it) => {
+    searchTerms.find((it) => {
       const termValue = typeof it === "string" ? it : it.value;
       return termValue === value.value;
     });
@@ -298,10 +308,10 @@ function getFilteredTerms<O extends SuggestTerm>(
   const normalizedValue = value.toLowerCase();
   for (
     let idx = 0;
-    idx < autoSuggestTerms.length && result.length < maxSuggestions;
+    idx < searchTerms?.length && result.length < maxSuggestions;
     idx++
   ) {
-    const it = autoSuggestTerms[idx];
+    const it = searchTerms[idx];
     const term = typeof it === "string" ? it : it.label ?? it.value;
     if (term.toLowerCase().includes(normalizedValue)) {
       result.push(it);
@@ -310,8 +320,8 @@ function getFilteredTerms<O extends SuggestTerm>(
   return result;
 }
 
-function getLabel<O extends SuggestTerm>(
-  suggestTerm: SuggestTerm,
+function getLabel<O extends SearchTerm>(
+  suggestTerm: SearchTerm,
   value: string | O,
   termIdx: number
 ): React.ReactNode {
@@ -327,7 +337,7 @@ function getLabel<O extends SuggestTerm>(
   const suffix = term.substring(idx + query.length);
 
   return (
-    <span className={"autoSuggest__listItem__value"} data-term-index={termIdx}>
+    <span className={"search__listItem__value"} data-term-index={termIdx}>
       {prefix}
       <mark>{middle}</mark>
       {suffix}
@@ -335,4 +345,4 @@ function getLabel<O extends SuggestTerm>(
   );
 }
 
-export { AutoSuggest };
+export default Search;
