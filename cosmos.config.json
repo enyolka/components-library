@@ -1,4 +1,4 @@
 {
   "staticPath": "public",
-  "plugins": ["react-cosmos-plugin-vite"]
+  "plugins": ["react-cosmos-plugin-webpack"]
 }

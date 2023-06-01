@@ -9,8 +9,6 @@ export default () => {
     const [isOpen, setIsOpen] = useValue<boolean>("isOpen", {defaultValue: false})
     const [closeOutsie] = useValue<boolean>("closeOutside", {defaultValue: false})
     const [isCloseMarkVisible] = useValue<boolean>("isCloseMarkVisible", {defaultValue: true})
-    // const [messageType] = useSelect<messageType>("messageType", {options: ["default", "important", "info", "error"]})
-    // const [messageSize] = useSelect<messageSize>("messageSize", {options: ["small", "medium", "big"]})
 
 	return (
         <>
@@ -20,7 +18,7 @@ export default () => {
                 setIsOpen={setIsOpen}
                 isOutsideClosable={closeOutsie}
                 isCloseMarkVisible={isCloseMarkVisible}
-                label="aria"
+                label="simpleLabel"
             >
                 <div>
                     <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laboriosam, corporis!</p>

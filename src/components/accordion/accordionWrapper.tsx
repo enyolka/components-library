@@ -4,9 +4,8 @@ import * as classNames from "classnames";
 import "./accordion.css";
 
 export type Props = {
-  className?: string;
   isMultiExpandable?: boolean;
-  isCollapsible?: boolean;
+  className?: string;
   children: Array<React.ReactElement<ChildrenProps>>;
 };
 
@@ -17,9 +16,8 @@ type ChildrenProps = {
 
 
 const AccordionWrapper: React.ReactElement = ({
-  className,
-  isCollapsible = true,
   isMultiExpandable = true,
+  className,
   children,
 }: Props) => {
   const [expandableChildren, setExpandableChildren] = useState(children.map((it) => it.props.expanded ?? false));
@@ -34,7 +32,7 @@ const AccordionWrapper: React.ReactElement = ({
         return normalize(prev.slice(0, children.length), isMultiExpandable);
       } else {
         return normalize(
-          [...prev, ...getBooleanArray(children.length - prev.length)],
+          [...prev, ...new Array(children.length - prev.length).map(() => false)],
           isMultiExpandable
         );
       }
@@ -42,7 +40,7 @@ const AccordionWrapper: React.ReactElement = ({
   }, [children.length, isMultiExpandable]);
 
   const onToggle = (idx: number) =>
-    setExpandableChildren((prev) => toggle(prev, idx, isCollapsible, isMultiExpandable));
+    setExpandableChildren((prev) => toggle(prev, idx, isMultiExpandable));
 
   const clonedChildren = useMemo(() => {
     return children.map((element, idx) =>
@@ -62,44 +60,24 @@ const AccordionWrapper: React.ReactElement = ({
 const toggle = (
   expanded: boolean[],
   idx: number,
-  isCollapsible: boolean,
   isMultiExpandable: boolean
 ): boolean[] => {
-  if (!isCollapsible && !isMultiExpandable) {
-    const newExpanded = getBooleanArray(expanded.length);
-    newExpanded[idx] = !expanded[idx];
-
-    if (newExpanded.every((isExpanded) => !isExpanded)) {
-      return expanded;
-    }
-    return newExpanded;
-  } else if (!isCollapsible) {
-    const newExpanded = [...expanded];
-    newExpanded[idx] = !expanded[idx];
-
-    if (newExpanded.every((isExpanded) => !isExpanded)) {
-      return expanded;
-    }
-    return newExpanded;
-  } else if (!isMultiExpandable) {
-    const newExpanded = getBooleanArray(expanded.length);
+  if (!isMultiExpandable) {
+    const newExpanded = new Array(expanded.length).map(() => false);
     newExpanded[idx] = !expanded[idx];
     return newExpanded;
   } else {
-    return toggleArray(expanded, idx);
+    const newArray = [...expanded];
+    newArray[idx] = !newArray[idx];
+    return newArray;
   }
 };
 
-const toggleArray = (array: boolean[], idx: number) => {
-  const newArray = [...array];
-  newArray[idx] = !newArray[idx];
-  return newArray;
-};
 
 const normalize = (expanded: boolean[], isMultiExpandable: boolean): boolean[] => {
   if (!isMultiExpandable) {
     const firstExpandedIdx = expanded.indexOf(true);
-    const newExpanded = getBooleanArray(expanded.length);
+    const newExpanded = new Array(expanded.length).map(() => false)
     if (firstExpandedIdx !== -1) {
       newExpanded[firstExpandedIdx] = true;
     }

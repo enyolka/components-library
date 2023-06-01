@@ -1,12 +1,14 @@
 /* eslint-disable import/no-anonymous-default-export */
 import * as React from "react";
+import { useState } from "react";
 import Toggle from "./toggle";
-import { useSelect, useValue } from "react-cosmos/fixture";
+import { useValue } from "react-cosmos/fixture";
 
 
 export default () => {
-    const [value, setValue] = useValue<string>("value", {defaultValue: "login"})
-    // const [value, setValue]  = useSelect<string>("value", { defaultValue: "login", options: ["login", "register"]})
+    const [value, setValue] = useState<string>("login")
+    const [disabled] = useValue<boolean>("disabled", {defaultValue: false})
+
     const options = [
         {
           value: "login",
@@ -23,6 +25,7 @@ export default () => {
             options={options} 
             value={value} 
             onChange={setValue}
+            disabled={disabled}
         />
     )
 }

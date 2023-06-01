@@ -160,7 +160,6 @@ function Search<O extends SearchTerm>({
   return (
     <div
       className={classNames("search", hasInput ? "active" : "", className)}
-      role="combobox"
       aria-expanded={expanded}
       aria-haspopup="listbox"
       onFocus={() => {
@@ -216,7 +215,7 @@ function Search<O extends SearchTerm>({
               }
               disabled={disabled}
             >
-              {buttonIcon != undefined ? (
+              {buttonIcon !== undefined ? (
                 buttonIcon
               ) : (
                 <FaSearch className="search__buttonIcon" />

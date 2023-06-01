@@ -1,6 +1,6 @@
 /* eslint-disable import/no-anonymous-default-export */
 import * as React from 'react';
-import { useSelect, useValue } from 'react-cosmos/fixture';
+import { useSelect } from 'react-cosmos/fixture';
 import Button from "./Button";
 
 export default () => {

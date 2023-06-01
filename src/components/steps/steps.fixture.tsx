@@ -27,6 +27,11 @@ export default () => {
     const [activeStepIdx] = useSelect("activeStepIdx", {options: ["1", "2"]})
 
 	return (
-        <Steps steps={preparedSteps} activeStepIdx={parseInt(activeStepIdx) - 1} ariaLabelCompleted={''} ariaLabelCurrent={''}/>
+        <Steps 
+            steps={preparedSteps} 
+            activeStepIdx={parseInt(activeStepIdx) - 1} 
+            ariaLabelCompleted={''} 
+            ariaLabelCurrent={''}
+        />
     )
 };

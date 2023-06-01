@@ -1,62 +1,52 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import * as classNames from "classnames";
 import * as React from "react";
+import "./steps.css";
 
 type Props = {
   idx: number;
   label: string;
+  ariaLabelCompleted: string;
+  ariaLabelCurrent: string;
   subLabel?: string;
+  link?: string;
   completed?: boolean;
   current?: boolean;
   disabled?: boolean;
-  ariaLabel: {
-    completed: string;
-    current: string;
-  };
+  className?: string;
 };
 
-function Step({
-  ariaLabel,
+export const Step = ({
   idx,
   label,
-  completed,
+  ariaLabelCompleted,
+  ariaLabelCurrent,
   subLabel,
+  link,
+  completed,
   current,
   disabled,
-}: Props): React.ReactElement {
-  const stepId = `o-${idx}`;
+  className,
+}: Props) => {
   return (
     <a
-      aria-labelledby={stepId}
-      tabIndex={disabled ? -1 : undefined}
-      href="#"
+      href={link ?? "#"}
       onClick={(e) => e.preventDefault()}
-      className={classNames("step-indicator__item", {
-        "step-indicator__item--completed": completed,
-        "step-indicator__item--current": current,
-        "step-indicator__item--disabled": disabled,
-      })}
+      className={classNames("step", { completed, current, disabled }, className)}
+      tabIndex={disabled ? -1 : undefined}
     >
       <span
-        className="step-indicator__icon"
-        aria-label={
-          completed
-            ? ariaLabel.completed
-            : current
-            ? ariaLabel.current
-            : undefined
-        }
-        aria-hidden={!completed || !current}
+        className="step__icon"
+        aria-label={completed ? ariaLabelCompleted : ariaLabelCurrent}
       >
         {idx + 1}
       </span>
-      <span id={stepId} className="step-indicator__text">
+      <span className="step__text">
         {label}
-        {subLabel && (
-          <small className="step-indicator__subtext">{subLabel}</small>
-        )}
+        {subLabel && <small className="steps__subtext">{subLabel}</small>}
       </span>
     </a>
   );
-}
+};
 
-export { Step };
+export default Step ;

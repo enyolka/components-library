@@ -4,11 +4,11 @@ import "./accordion.css";
 
 type SectionProps = {
     header: string;
-    icon?: React.ReactNode;
     subHeader?: string;
+    icon?: React.ReactNode;
     children?: React.ReactNode;
     expanded?: boolean;
-    expandable?: boolean;
+    isExpandable?: boolean;
     headerColor?: "default" | "main" | string;
     color?: "default" | "main" | string;
     className?: string;
@@ -24,26 +24,27 @@ const Accordion: React.ReactElement = ({
     icon,
     children,
     subHeader,
-    expandable = true,
+    isExpandable = true,
     headerColor = "default",
     color = "default",
     className,
     ...props
   }: SectionProps) => {
+    console.log(isExpandable)
     return (
       <section className="accordion">
         <header
           className="accordion__header"
           tabIndex={0}
-          aria-expanded={expandable && expanded}
-          onClick={onClick}
+          aria-expanded={isExpandable && expanded}
+          onClick={() => onClick(!expanded)}
           style={{
             backgroundColor:
-              color && color == "default"
+              headerColor && headerColor === "default"
                 ? "rgb(250, 250, 250)"
-                : color == "main"
+                : headerColor === "main"
                 ? "var(--main-light-max)"
-                : color,
+                : headerColor,
           }}
         >
           {icon}
@@ -57,13 +58,13 @@ const Accordion: React.ReactElement = ({
           >
             {header}
           </h4>
-          {expandable && (
+          {isExpandable && (
             <div
               className={classNames(expanded ? "button-up" : "button-down")}
             ></div>
           )}
         </header>
-        {children && expandable ? (
+        {children && expanded ? (
           <div
             className="accordion__content"
             style={{

@@ -3,12 +3,9 @@ import * as React from "react";
 import {  useRef, useState } from "react";
 import "./menuItem.css";
 
-type MenuItemRole = "redirect" | "popup";
-
 type Props = {
   header: string | React.ReactNode;
   icon?: React.ReactNode;
-  role?: MenuItemRole;
   to?: string;
   isActive?: boolean;
   options?: string[]; //MenuItemOption[];
@@ -22,7 +19,6 @@ const MenuItem = ({
   header,
   icon,
   to = "",
-  role = "redirect",
   isActive = false,
   options,
   onOptionSelect,

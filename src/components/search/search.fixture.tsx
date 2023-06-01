@@ -1,6 +1,6 @@
 /* eslint-disable import/no-anonymous-default-export */
 import * as React from 'react';
-import { useSelect, useValue } from 'react-cosmos/fixture';
+import { useValue } from 'react-cosmos/fixture';
 import Search, { Option } from './search';
 import { IoSettings } from "react-icons/io5";
 
@@ -36,7 +36,6 @@ const options: Option = [
 ]
 
 export default () => {
-    const [wrapped] = useValue<boolean>("wrapped", {defaultValue: true})
     const [value, setValue] = useValue<string>("value", {defaultValue: options[0].value})
     // const [messageType] = useSelect<messageType>("messageType", {options: ["default", "important", "info", "error"]})
 

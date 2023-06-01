@@ -4,13 +4,15 @@ import "./message.css";
 import { BiInfoCircle, BiErrorCircle, BiMessageAlt } from "react-icons/bi";
 import { BsExclamationDiamond } from "react-icons/bs";
 
-export type messageType = "default" | "important" | "info" | "error";
-export type messageSize =  "small" | "medium" | "big";
+export type MessageType = "default" | "important" | "info" | "error";
+export type MessageSize =  "small" | "medium" | "big";
+export type MessageFloat = "above" | "bottom" | "right" | "left" | "none";
 
 type Props = {
-  type?: messageType;
-  size?: messageSize;
+  type?: MessageType;
+  size?: MessageSize;
   wrapped?: boolean;
+  float?: MessageFloat;
   children?: React.ReactNode;
   className?: string;
 };
@@ -19,6 +21,7 @@ const Message = ({
   type = "default",
   size,
   wrapped = false,
+  float = "none",
   children,
   className,
 }: Props) => {
@@ -31,9 +34,10 @@ const Message = ({
 
   return (
     <div
-      className={classNames("message", type, size, className, {
-        wrapped: wrapped,
-      })}
+      className={classNames("message", type, size, float, {
+        wrapped: wrapped
+      }, 
+      className)}
     >
       {icons[type]}
       <p className="message_text">{children}</p>
